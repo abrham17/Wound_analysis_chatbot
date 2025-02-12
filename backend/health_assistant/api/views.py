@@ -9,12 +9,11 @@ import google.generativeai as genai
 import json
 import os
 from huggingface_hub import hf_hub_download
-
-# Download the model
+import markdown
 from torchvision import models
 
 class CustomResNet(nn.Module):
-    def __init__(self, num_classes=10):  # Adjust num_classes as needed
+    def __init__(self, num_classes=7):  # Adjust num_classes as needed
         super(CustomResNet, self).__init__()
         self.base_model = models.resnet50(pretrained=False)
         self.base_model.fc = nn.Linear(self.base_model.fc.in_features, num_classes)
@@ -35,19 +34,7 @@ class_names = ["Abrasion", "Bruises", "Burn", "Cut", "Fracture", "Ingrown_nails"
 
 # Load ResNet model for image classification
 
-"""
-model = models.resnet50(pretrained=False)
-num_classes = 7
-model.fc = nn.Linear(model.fc.in_features, num_classes)
 
-# Load saved weights
-model.load_state_dict(torch.load(
-    "C:\\Users\\yonas\\OneDrive\\Desktop\\projects\\MLB\\MLB_Prediction\\backend\\health_assistant\\api\\best_model.pth",
-    map_location='cpu'
-))
-model.eval()
-
-"""
 # Image transformations
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
@@ -100,13 +87,14 @@ def answer_question(request):
 
             input_text = f"Question: {question}\nContext: {context}"
 
-            # Gemini API Call
-            model = genai.GenerativeModel('gemini-pro')  # Using Gemini Pro model
+            model = genai.GenerativeModel('gemini-pro')
             response = model.generate_content(input_text)
 
-            generated_answer = response.text.strip()  # Extract the generated response
-
-            return JsonResponse({'question': question, 'answer': generated_answer})
+            generated_answer = response.text.strip() 
+            print(generated_answer) 
+            markdown_answer = markdown.markdown(generated_answer)
+            print(markdown_answer)
+            return JsonResponse({'question': question, 'answer': markdown_answer})
 
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)

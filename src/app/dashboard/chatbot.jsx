@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "./ChatBot.css";
-
+import ReactMarkdown from 'react-markdown';
+import "./chatbot.css";
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -94,45 +94,23 @@ const ChatBot = () => {
 
   return (
     <div className="chat-container">
+      <div className="image-upload-container" onClick={() => document.getElementById("image-input").click()}>
+        <button className="upload-btn">Upload Wound Image</button>
+        <input type="file" accept="image/*" id="image-input" style={{ display: "none" }} onChange={handleImageUpload} />
+      </div>
+
+      {imagePreview && <img src={imagePreview} alt="Uploaded Preview" className="uploaded-image" />}
+
       <div className="chat-messages">
-        <div className="image-upload-container">
-          <button
-            className="upload-btn"
-            onClick={() => document.getElementById("image-input").click()}
-          >
-            Upload Image
-          </button>
-          <input
-            type="file"
-            accept="image/*"
-            id="image-input"
-            style={{ display: "none" }}
-            onChange={handleImageUpload}
-          />
-        </div>
-
-        {imagePreview && (
-          <img
-            src={imagePreview}
-            alt="Uploaded Preview"
-            style={{ width: "150px", height: "150px", marginBottom: "10px" }}
-          />
-        )}
-
         {messages.map((msg, index) => (
           <div key={index} className={`message ${msg.sender}`}>
-            {msg.text}
+            <ReactMarkdown>{msg.text}</ReactMarkdown>
           </div>
         ))}
       </div>
 
       <form className="chat-input" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Ask something about the image..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
+        <input type="text" placeholder="Ask something about the image..." value={input} onChange={(e) => setInput(e.target.value)} />
         <button type="submit">Send</button>
       </form>
     </div>
