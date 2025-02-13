@@ -9,9 +9,13 @@ import google.generativeai as genai
 import json
 import os
 from huggingface_hub import hf_hub_download
-import markdown
 from torchvision import models
+# Load model directly
+from transformers import AutoImageProcessor, AutoModelForImageClassification
 
+processor = AutoImageProcessor.from_pretrained("Hemg/Wound-Image-classification")
+model = AutoModelForImageClassification.from_pretrained("Hemg/Wound-Image-classification")
+"""
 class CustomResNet(nn.Module):
     def __init__(self, num_classes=7):  # Adjust num_classes as needed
         super(CustomResNet, self).__init__()
@@ -27,6 +31,7 @@ model_path = hf_hub_download(repo_id="Abrhame/resnet-image-classifier-v2", filen
 model = CustomResNet(num_classes=7)
 model.load_state_dict(torch.load(model_path) , strict=False)
 model.eval()
+"""
 # Load Google Gemini API key
 GOOGLE_API_KEY = "AIzaSyBnIUvvrrMPMDUshQNTBfEEZLzhPtiggTA"  # Replace with your actual API key
 genai.configure(api_key=GOOGLE_API_KEY)
@@ -51,6 +56,7 @@ def classify_image(request):
             return JsonResponse({'error': 'Image is required.'}, status=400)
 
         try:
+            """
             image = Image.open(image_file).convert("RGB")
             image = transform(image).unsqueeze(0)
 
@@ -65,8 +71,17 @@ def classify_image(request):
                 'class_name': class_name,
                 'confidence': confidence_score
             }
-
-            return JsonResponse(response_data)
+            """
+            image = Image.open(image_file).convert("RGB")
+            inputs = processor(images=image, return_tensors="pt")
+            with torch.no_grad():
+                outputs = model(**inputs)
+                logits = outputs.logits
+                predicted_class_idx = logits.argmax(-1).item()
+            labels = model.config.id2label
+            class_name = labels[predicted_class_idx]
+            print(class_name)
+            return JsonResponse({'class_name': class_name})
 
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
@@ -91,10 +106,7 @@ def answer_question(request):
             response = model.generate_content(input_text)
 
             generated_answer = response.text.strip() 
-            print(generated_answer) 
-            markdown_answer = markdown.markdown(generated_answer)
-            print(markdown_answer)
-            return JsonResponse({'question': question, 'answer': markdown_answer})
+            return JsonResponse({'question': question, 'answer': generated_answer})
 
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)

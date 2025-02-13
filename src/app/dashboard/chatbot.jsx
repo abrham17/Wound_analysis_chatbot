@@ -32,13 +32,13 @@ const ChatBot = () => {
         const imageData = await imageResponse.json();
         classifiedClass = imageData.class_name; // Get the class_name from response
         setImageDataClass(classifiedClass); // Update the state
-
+        /*
         setMessages((prev) => [
           ...prev,
           { sender: "bot", text: `Classified as: ${classifiedClass}` },
-        ]);
+        ]);*/
       }
-
+      const contextValue = classifiedClass ? classifiedClass : imageDataClass; 
       const questionResponse = await fetch("http://localhost:8000/api/question/", {
         method: "POST",
         headers: {
@@ -46,7 +46,7 @@ const ChatBot = () => {
         },
         body: JSON.stringify({
           question: input,
-          context: classifiedClass, 
+          context: contextValue, 
         }),
       });
 
