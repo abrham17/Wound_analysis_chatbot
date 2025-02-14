@@ -10,9 +10,10 @@ import json
 import os
 from huggingface_hub import hf_hub_download
 from torchvision import models
-# Load model directly
 from transformers import AutoImageProcessor, AutoModelForImageClassification
+import dotenv
 
+dotenv.load_dotenv()
 processor = AutoImageProcessor.from_pretrained("Hemg/Wound-Image-classification")
 model = AutoModelForImageClassification.from_pretrained("Hemg/Wound-Image-classification")
 """
@@ -32,15 +33,9 @@ model = CustomResNet(num_classes=7)
 model.load_state_dict(torch.load(model_path) , strict=False)
 model.eval()
 """
-# Load Google Gemini API key
-GOOGLE_API_KEY = "AIzaSyCs93RXJEeGVIxeWYKp8hAIja0IbPKOLW8"  # Replace with your actual API key
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 genai.configure(api_key=GOOGLE_API_KEY)
-class_names = ["Abrasion", "Bruises", "Burn", "Cut", "Fracture", "Ingrown_nails", "Laceration"]
 
-# Load ResNet model for image classification
-
-
-# Image transformations
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
