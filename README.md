@@ -105,4 +105,24 @@ chatbot-project/
 	|	│   ├── manage.py
 
 
-gate to the backend folder:
+###Dependencies
+
+##Frontend
+
+React
+
+React Markdown
+
+##Backend
+
+Django
+
+Django REST Framework
+
+Pillow (for image processing)
+
+Transformers(from hugging-face)
+
+Torch
+
+
