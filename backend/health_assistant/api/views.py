@@ -33,7 +33,7 @@ model.load_state_dict(torch.load(model_path) , strict=False)
 model.eval()
 """
 # Load Google Gemini API key
-GOOGLE_API_KEY = "AIzaSyBnIUvvrrMPMDUshQNTBfEEZLzhPtiggTA"  # Replace with your actual API key
+GOOGLE_API_KEY = "AIzaSyCs93RXJEeGVIxeWYKp8hAIja0IbPKOLW8"  # Replace with your actual API key
 genai.configure(api_key=GOOGLE_API_KEY)
 class_names = ["Abrasion", "Bruises", "Burn", "Cut", "Fracture", "Ingrown_nails", "Laceration"]
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import "./chatbot.css";
+
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -15,10 +16,10 @@ const ChatBot = () => {
     // Add the user's question as a message
     const userMessage = { sender: "user", text: input };
     setMessages((prev) => [...prev, userMessage]);
+    
+    let classifiedClass = null; // To store the classification result
 
     try {
-      let classifiedClass = null; // To store the classification result
-
       // Check if an image is uploaded and classify it first
       if (image) {
         const formData = new FormData();
@@ -32,13 +33,18 @@ const ChatBot = () => {
         const imageData = await imageResponse.json();
         classifiedClass = imageData.class_name; // Get the class_name from response
         setImageDataClass(classifiedClass); // Update the state
-        /*
-        setMessages((prev) => [
-          ...prev,
-          { sender: "bot", text: `Classified as: ${classifiedClass}` },
-        ]);*/
+
+        // If no classification is returned, show an error message and return
+        if (!classifiedClass) {
+          setMessages((prev) => [
+            ...prev,
+            { sender: "bot", text: "Failed to classify the image." },
+          ]);
+          return;
+        }
       }
-      const contextValue = classifiedClass ? classifiedClass : imageDataClass; 
+
+      // Now make the question request with the context
       const questionResponse = await fetch("http://localhost:8000/api/question/", {
         method: "POST",
         headers: {
@@ -46,12 +52,11 @@ const ChatBot = () => {
         },
         body: JSON.stringify({
           question: input,
-          context: contextValue, 
+          context: classifiedClass,  // Use the classified class here
         }),
       });
 
       const questionData = await questionResponse.json();
-      console.log(questionData);
       setMessages((prev) => [
         ...prev,
         { sender: "bot", text: `Answer: ${questionData.answer}` },
