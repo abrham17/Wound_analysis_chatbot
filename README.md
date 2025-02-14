@@ -1,8 +1,8 @@
-                                             ChatBot with Image Classification
+ChatBot with Image Classification
 
 This is a React-based chatbot that allows users to ask questions about an uploaded wound image. The chatbot first classifies the image using a backend API and then processes the user's question in the context of the classification result.
 
-		Features
+Features
 
 Users can upload an image (JPEG, PNG, or GIF) under 5MB.
 
@@ -14,14 +14,14 @@ Responses are displayed using markdown formatting.
 
 Error handling for failed classification, invalid image uploads, and API failures.
 
-	Installation
+Installation
 	
-	Prerequisites
+Prerequisites
 
 Node.js and npm installed.
 
 A running backend server that supports the /api/classify/ and /api/question/ endpoints.
-	Steps
+Steps
 1/ Clone the repository:
 			
 	 https://github.com/abrham17/Wound_analysis_chatbot
@@ -32,20 +32,20 @@ A running backend server that supports the /api/classify/ and /api/question/ end
  	npm install
 	npm start
 
-		Backend Installation
-		Prerequisites
+Backend Installation
+Prerequisites
 
 Python installed (recommended: Python 3.8+)
 Django and Django REST Framework installed
 Pillow library for image processing
 
-	Steps
+Steps
 1/ Navigate to the folder
 
 	cd backend
  	python -m venv .venv
 	.venv/Scripts/activate
- 2/Install dependencies:
+2/Install dependencies:
 
 	pip install -r requirements.txt
 	cd health_assistant
@@ -60,7 +60,7 @@ Pillow library for image processing
 	python manage.py runserver
 
   
-  Usage
+Usage
 
 Click the "Upload Wound Image" button to select an image.
 
@@ -86,7 +86,7 @@ Request: JSON JSON.stringify({ question: input,  context: classifiedClass})
 
 Response: JSON  {'question': question, 'answer': generated_answer}
 
-				Project Structure
+Project Structure
 chatbot-project/
 	│── frontend/
 	│   ├── src/
@@ -105,14 +105,14 @@ chatbot-project/
 	|	│   ├── manage.py
 
 
-								###Dependencies
+Dependencies
 
-		Frontend
+Frontend
 
 React
 React Markdown
 
-		Backend
+Backend
 
 Django
 Django REST Framework
