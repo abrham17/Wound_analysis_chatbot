@@ -1,14 +1,14 @@
-ChatBot with Image Classification
+ChatBot with wound Image Classification and Medical document processing
 
-This is a React-based chatbot that allows users to ask questions about an uploaded wound image. The chatbot first classifies the image using a backend API and then processes the user's question in the context of the classification result.
+This is a React-based chatbot that allows users to ask questions about an uploaded wound image. The chatbot first classifies the image using a backend API and then processes the user's question in the context of the classification result.The chatbot can also process text documents enabling to ask question from both the document and the image or either.
 
 Features
 
-Users can upload an image (JPEG, PNG, or GIF) under 5MB.
+Users can upload an image (JPEG, PNG, or GIF) under 5MB and/or, a medical document of type 'pdf','docx','plain text', ms-excel',spreedsheet','csv' files maximmum of 10MB.
 
-The chatbot classifies the image using a backend API (/api/classify/).
+The chatbot classifies the image (/api/classify/) and process the text doc(api/process_doc) using a backend API.
 
-Users can ask questions related to the image, which are sent along with the classification result to a separate API (/api/question/).
+Users can ask questions related to the image and or the document, which are sent along with the classification result to a separate API (/api/question/) .
 
 Responses are displayed using markdown formatting.
 
